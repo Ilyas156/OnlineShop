@@ -4,14 +4,14 @@ namespace frontend\forms;
 
 use Yii;
 use yii\base\Model;
-use common\models\User;
+use common\entities\User;
 
 /**
  * Password reset request form
  */
 class PasswordResetRequestForm extends Model
 {
-    public $email;
+    public string $email;
 
 
     /**

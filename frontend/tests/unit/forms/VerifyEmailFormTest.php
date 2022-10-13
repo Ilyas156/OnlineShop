@@ -1,16 +1,18 @@
 <?php
 
-namespace frontend\tests\unit\models;
+namespace frontend\tests\unit\forms;
 
+use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
-use frontend\models\VerifyEmailForm;
+use frontend\forms\VerifyEmailForm;
+use frontend\tests\UnitTester;
 
-class VerifyEmailFormTest extends \Codeception\Test\Unit
+class VerifyEmailFormTest extends Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
 
     public function _before()

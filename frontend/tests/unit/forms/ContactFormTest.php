@@ -1,11 +1,12 @@
 <?php
 
-namespace frontend\tests\unit\models;
+namespace frontend\tests\unit\forms;
 
+use Codeception\Test\Unit;
 use frontend\forms\ContactForm;
 use yii\mail\MessageInterface;
 
-class ContactFormTest extends \Codeception\Test\Unit
+class ContactFormTest extends Unit
 {
     public function testSendEmail()
     {
