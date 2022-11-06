@@ -3,7 +3,7 @@
 namespace unit\services;
 
 use Codeception\Test\Unit;
-use frontend\services\SignupService;
+use shop\services\auth\SignupService;
 
 class SignupServiceTest extends Unit
 {

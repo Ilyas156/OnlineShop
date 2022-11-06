@@ -1,6 +1,6 @@
 <?php
 
-use common\models\LoginForm;
+use shop\forms\auth\LoginForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 

@@ -3,9 +3,9 @@
 /** @var yii\web\View $this */
 /** @var User $user */
 
-use shop\entities\User;
+use shop\entities\User\User;
 
-$verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'token' => $user->verification_token]);
+$verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['auth/signup/confirm', 'token' => $user->verification_token]);
 ?>
 Hello <?= $user->username ?>,
 

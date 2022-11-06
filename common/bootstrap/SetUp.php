@@ -3,10 +3,9 @@
 namespace common\bootstrap;
 
 
-use shop\services\SignupService;
+use shop\services\ContactService;
 use yii\base\BootstrapInterface;
 use yii\mail\MailerInterface;
-use Symfony\Component\Mailer\Mailer;
 
 class SetUp implements BootstrapInterface
 {
@@ -19,7 +18,7 @@ class SetUp implements BootstrapInterface
             return $app->mailer;
         });
 
-        $container->set(SignupService::class, [], [
+        $container->set(ContactService::class, [], [
             'supportEmail' => $app->params['supportEmail'],
         ]);
     }

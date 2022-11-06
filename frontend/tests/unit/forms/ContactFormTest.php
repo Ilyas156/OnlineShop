@@ -3,7 +3,7 @@
 namespace frontend\tests\unit\forms;
 
 use Codeception\Test\Unit;
-use frontend\forms\ContactForm;
+use shop\forms\ContactForm;
 use yii\mail\MessageInterface;
 
 class ContactFormTest extends Unit

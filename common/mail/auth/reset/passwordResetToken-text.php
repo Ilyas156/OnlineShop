@@ -3,7 +3,7 @@
 /** @var yii\web\View $this */
 /** @var User $user */
 
-use shop\entities\User;
+use shop\entities\User\User;
 
 $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['auth/reset/confirm', 'token' => $user->password_reset_token]);
 ?>

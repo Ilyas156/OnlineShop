@@ -2,7 +2,7 @@
 
 namespace shop\services\auth;
 
-use shop\entities\User;
+use shop\entities\User\User;
 use shop\forms\auth\SignupForm;
 use shop\repositories\UserRepository;
 use yii\mail\MailerInterface;
@@ -20,7 +20,7 @@ class SignupService
 
     public function signup(SignupForm $form): void
     {
-        $user = User::create(
+        $user = User::requestSignup(
             $form->username,
             $form->email,
             $form->password
@@ -29,7 +29,7 @@ class SignupService
 
         $sent = $this->mailer
             ->compose(
-                ['html' => 'emailConfirmToken-html', 'text' => 'emailConfirmToken-text'],
+                ['html' => 'auth/signup/confirm-html', 'text' => 'auth/signup/confirm-text'],
                 ['user' => $user]
             )
             ->setTo($form->email)

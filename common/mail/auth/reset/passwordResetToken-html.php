@@ -1,6 +1,6 @@
 <?php
 
-use shop\entities\User;
+use shop\entities\User\User;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
