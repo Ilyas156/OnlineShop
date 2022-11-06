@@ -1,8 +1,9 @@
 <?php
 
-namespace shop\entities;
+namespace shop\entities\User;
 
 use Yii;
+use yii\base\Exception;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -30,17 +31,16 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
 
-    public static function create(string $username, string $email, string $password): self
+    public static function requestSignup(string $username, string $email, string $password): self
     {
         $user = new User();
         $user->username = $username;
         $user->email = $email;
         $user->setPassword($password);
         $user->created_at = time();
-        $user->status = self::STATUS_ACTIVE;
+        $user->status = self::STATUS_WAIT;
+        $user->email_confirm_token = Yii::$app->security->generateRandomString();
         $user->generateAuthKey();
-        $user->generateEmailVerificationToken();
-
         return $user;
     }
 
@@ -52,6 +52,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return '{{%user}}';
     }
+
 
     /**
      * {@inheritdoc}
@@ -194,8 +195,9 @@ class User extends ActiveRecord implements IdentityInterface
      * Generates password hash from password and sets it to the model
      *
      * @param string $password
+     * @throws Exception
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
@@ -244,5 +246,23 @@ class User extends ActiveRecord implements IdentityInterface
     public function isWait(): bool
     {
         return $this->status === self::STATUS_WAIT;
+    }
+
+    public function resetPassword(string $password): void
+    {
+        if (empty($this->password_reset_token)) {
+            throw new \DomainException('Password resetting is not requested.');
+        }
+
+        $this->setPassword($password);
+        $this->password_reset_token = null;
+    }
+
+    public function requestPasswordReset(): void
+    {
+        if (!empty($this->password_reset_token) && self::isPasswordResetTokenValid($this->password_reset_token)) {
+            throw new \DomainException('Password resetting is already requested.');
+        }
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 }

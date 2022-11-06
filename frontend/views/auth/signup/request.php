@@ -4,7 +4,7 @@
 /** @var yii\bootstrap\ActiveForm $form */
 /** @var SignupForm $model */
 
-use frontend\forms\SignupForm;
+use shop\forms\auth\SignupForm;
 use yii\bootstrap\Html;
 use yii\bootstrap\ActiveForm;
 
