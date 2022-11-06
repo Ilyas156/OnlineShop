@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\forms;
+namespace shop\forms;
 
 use common\entities\User;
 use yii\base\InvalidArgumentException;

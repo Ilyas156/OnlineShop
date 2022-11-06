@@ -18,7 +18,8 @@
         "yiisoft/yii2": "~2.0.45",
         "yiisoft/yii2-bootstrap": "2.0.9",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
-        "dmstr/yii2-adminlte-asset": "*"
+        "dmstr/yii2-adminlte-asset": "*",
+        "ext-http": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

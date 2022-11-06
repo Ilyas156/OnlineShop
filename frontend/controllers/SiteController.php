@@ -2,19 +2,20 @@
 
 namespace frontend\controllers;
 
-use frontend\forms\ResendVerificationEmailForm;
-use frontend\forms\VerifyEmailForm;
+use shop\forms\ResendVerificationEmailForm;
+use shop\forms\VerifyEmailForm;
+use shop\services\auth\SignupService;
+use shop\forms\auth\LoginForm;
+use shop\forms\auth\PasswordResetRequestForm;
+use shop\forms\auth\ResetPasswordForm;
+use shop\forms\auth\SignupForm;
+use shop\forms\ContactForm;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\forms\PasswordResetRequestForm;
-use frontend\forms\ResetPasswordForm;
-use frontend\forms\SignupForm;
-use frontend\forms\ContactForm;
 use yii\web\Response;
 
 /**
@@ -22,6 +23,20 @@ use yii\web\Response;
  */
 class SiteController extends Controller
 {
+    private SignupService $signupService;
+
+    public function __construct(
+        $id,
+        $module,
+        SignupService $signupService,
+        $config = []
+    )
+    {
+        $this->signupService = $signupService;
+
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -154,14 +169,16 @@ class SiteController extends Controller
      */
     public function actionSignup(): string|Response
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        $form = new SignupForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $this->signupService->signup($form);
+
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             return $this->goHome();
         }
 
         return $this->render('signup', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 

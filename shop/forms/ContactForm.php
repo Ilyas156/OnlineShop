@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\forms;
+namespace shop\forms;
 
 use Yii;
 use yii\base\Model;
@@ -20,7 +20,7 @@ class ContactForm extends Model
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             // name, email, subject and body are required
@@ -35,7 +35,7 @@ class ContactForm extends Model
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'verifyCode' => 'Verification Code',
