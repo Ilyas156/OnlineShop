@@ -50,4 +50,9 @@ class UserRepository
         }
         return $user;
     }
+
+    public function get(int|string|null $id): ?User
+    {
+        return $this->getBy(['id' => $id]);
+    }
 }
