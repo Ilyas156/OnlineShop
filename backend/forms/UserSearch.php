@@ -14,7 +14,8 @@ class UserSearch extends Model
 {
     public $id;
     public $status;
-    public $created_at;
+    public $dateFrom;
+    public $dateTo;
     public $username;
     public $email;
 
@@ -24,8 +25,9 @@ class UserSearch extends Model
     public function rules(): array
     {
         return [
-            [['id', 'status', 'created_at'], 'integer'],
+            [['id', 'status'], 'integer'],
             [['username', 'email'], 'safe'],
+            [['dateFrom', 'dateTo'], 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -53,11 +55,24 @@ class UserSearch extends Model
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email]);
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(
+                [
+                    '>=',
+                    'created_at',
+                    $this->dateFrom ? strtotime($this->dateFrom . ' 00:00:00') : null
+                ]
+            )
+            ->andFilterWhere(
+                [
+                    '<=',
+                    'created_at',
+                    $this->dateTo ? strtotime($this->dateTo . ' 23:59:59') : null
+                ]
+            );;
 
         return $dataProvider;
     }

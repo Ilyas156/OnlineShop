@@ -1,5 +1,6 @@
 <?php
 
+use kartik\date\DatePicker;
 use shop\entities\User\User;
 use shop\helpers\UserHelper;
 use yii\helpers\Html;
@@ -40,7 +41,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             'email:email',
-            'created_at:datetime',
+            [
+                'attribute' => 'created_at',
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'dateFrom',
+                    'attribute2' => 'dateTo',
+                    'type' => DatePicker::TYPE_RANGE,
+                    'separator' => '-',
+                    'pluginOptions' => [
+                        'todayHighlight' => true,
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                    ],
+                ]),
+                'format' => 'datetime',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
