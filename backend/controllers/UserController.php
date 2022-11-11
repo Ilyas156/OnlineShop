@@ -2,12 +2,14 @@
 
 namespace backend\controllers;
 
+use Throwable;
 use Yii;
 use shop\entities\User\User;
 use backend\forms\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -17,7 +19,7 @@ class UserController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'verbs' => [
@@ -31,9 +33,9 @@ class UserController extends Controller
 
     /**
      * Lists all User models.
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -47,9 +49,10 @@ class UserController extends Controller
     /**
      * Displays a single User model.
      * @param integer $id
-     * @return mixed
+     * @return string
+     * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -59,9 +62,9 @@ class UserController extends Controller
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|Response
      */
-    public function actionCreate()
+    public function actionCreate(): string|Response
     {
         $model = new User();
 
@@ -78,9 +81,10 @@ class UserController extends Controller
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return string|Response
+     * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id): string|Response
     {
         $model = $this->findModel($id);
 
@@ -97,9 +101,10 @@ class UserController extends Controller
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return Response
+     * @throws Throwable
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): Response
     {
         $this->findModel($id)->delete();
 
@@ -113,7 +118,7 @@ class UserController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): User
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;
