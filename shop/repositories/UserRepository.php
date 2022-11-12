@@ -3,6 +3,8 @@
 namespace shop\repositories;
 
 use shop\entities\User\User;
+use Throwable;
+use yii\db\StaleObjectException;
 
 class UserRepository
 {
@@ -16,17 +18,17 @@ class UserRepository
         return User::find()->joinWith('networks n')->andWhere(['n.network' => $network, 'n.identity' => $identity])->one();
     }
 
-    public function getByEmailConfirmToken(string $token): ?User
+    public function getByEmailConfirmToken(string $token): User
     {
         return $this->getBy(['email_confirm_token' => $token]);
     }
 
-    public function getByEmail(string $email): ?User
+    public function getByEmail(string $email): User
     {
         return $this->getBy(['email' => $email]);
     }
 
-    public function getByPasswordResetToken(string $token): ?User
+    public function getByPasswordResetToken(string $token): User
     {
         return $this->getBy(['password_reset_token' => $token]);
     }
@@ -43,7 +45,7 @@ class UserRepository
         }
     }
 
-    private function getBy(array $condition): ?User
+    private function getBy(array $condition): User
     {
         if (!$user = User::find()->andWhere($condition)->limit(1)->one()) {
             throw new NotFoundException('User not found.');
@@ -51,8 +53,19 @@ class UserRepository
         return $user;
     }
 
-    public function get(int|string|null $id): ?User
+    public function get(int $id): User
     {
         return $this->getBy(['id' => $id]);
+    }
+
+    /**
+     * @throws StaleObjectException
+     * @throws Throwable
+     */
+    public function remove(User $user): void
+    {
+        if (!$user->delete()) {
+            throw new \RuntimeException();
+        }
     }
 }

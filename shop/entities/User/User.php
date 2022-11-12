@@ -34,7 +34,24 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_WAIT = 0;
     const STATUS_ACTIVE = 10;
 
+    /**
+     * @throws Exception
+     */
+    public static function create(string $username, string $email, string $password): self
+    {
+        $user = new User();
+        $user->username = $username;
+        $user->email = $email;
+        $user->setPassword(!empty($password) ? $password : Yii::$app->security->generateRandomString());
+        $user->created_at = time();
+        $user->status = self::STATUS_ACTIVE;
+        $user->auth_key = Yii::$app->security->generateRandomString();
+        return $user;
+    }
 
+    /**
+     * @throws Exception
+     */
     public static function requestSignup(string $username, string $email, string $password): self
     {
         $user = new User();
@@ -294,5 +311,12 @@ class User extends ActiveRecord implements IdentityInterface
             throw new \DomainException('Password resetting is already requested.');
         }
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    public function edit(string $username, string $email): void
+    {
+        $this->username = $username;
+        $this->email = $email;
+        $this->updated_at = time();
     }
 }
