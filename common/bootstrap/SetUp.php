@@ -19,7 +19,7 @@ class SetUp implements BootstrapInterface
         });
 
         $container->set(ContactService::class, [], [
-            'supportEmail' => $app->params['supportEmail'],
+            'adminEmail' => $app->params['supportEmail'],
         ]);
     }
 }
