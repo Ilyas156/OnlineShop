@@ -3,6 +3,7 @@ namespace shop\tests\unit\forms;
 
 use Codeception\Test\Unit;
 use shop\forms\ContactForm;
+use function PHPUnit\Framework\assertTrue;
 
 class ContactFormTest extends Unit
 {
@@ -17,6 +18,6 @@ class ContactFormTest extends Unit
             'body' => 'body of current message',
         ];
 
-        expect_that($model->validate(['name', 'email', 'subject', 'body']));
+        assertTrue($model->validate(['name', 'email', 'subject', 'body']));
     }
 }

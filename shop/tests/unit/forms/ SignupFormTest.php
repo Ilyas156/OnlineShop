@@ -3,25 +3,28 @@ namespace shop\tests\unit\forms;
 
 use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
-use frontend\tests\UnitTester;
+use shop\tests\UnitTester;
 use shop\forms\auth\SignupForm;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertTrue;
 
 class SignupFormTest extends Unit
 {
-    /**
-     * @var UnitTester
-     */
+
     protected UnitTester $tester;
 
-
-    public function _before()
+    /**
+     * @return array
+     */
+    public function _fixtures(): array
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php'
             ]
-        ]);
+        ];
     }
 
     public function testCorrectSignup()
@@ -32,7 +35,7 @@ class SignupFormTest extends Unit
             'password' => 'some_password',
         ]);
 
-        expect_that($model->validate());
+        assertTrue($model->validate());
     }
 
     public function testNotCorrectSignup()
@@ -43,13 +46,12 @@ class SignupFormTest extends Unit
             'password' => 'some_password',
         ]);
 
-        expect_not($model->validate());
-        expect_that($model->getErrors('username'));
-        expect_that($model->getErrors('email'));
+        assertFalse($model->validate());
+        assertTrue($model->getErrors('username'));
+        assertTrue($model->getErrors('email'));
 
-        expect($model->getFirstError('username'))
-            ->equals('This username has already been taken.');
-        expect($model->getFirstError('email'))
-            ->equals('This email address has already been taken.');
+        assertEquals($model->getFirstError('username'), 'This username has already been taken.');
+        assertEquals($model->getFirstError('email'), 'This email address has already been taken.');
+
     }
 }

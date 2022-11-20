@@ -7,6 +7,8 @@ use common\tests\UnitTester;
 use Yii;
 use shop\forms\auth\LoginForm;
 use common\fixtures\UserFixture;
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertTrue;
 
 /**
  * Login form test
@@ -19,14 +21,17 @@ class LoginFormTest extends Unit
     protected UnitTester $tester;
 
 
-    public function _before()
+    /**
+     * @return array
+     */
+    public function _fixtures(): array
     {
-        $this->tester->haveFixtures([
+        return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php'
             ]
-        ]);
+        ];
     }
 
     public function testBlank()
@@ -36,7 +41,7 @@ class LoginFormTest extends Unit
             'password' => '',
         ]);
 
-        expect_not($model->validate());
+        assertFalse($model->validate());
     }
 
     public function testCorrect()
@@ -46,6 +51,6 @@ class LoginFormTest extends Unit
             'password' => 'password_0',
         ]);
 
-        expect_that($model->validate());
+        assertTrue($model->validate());
     }
 }

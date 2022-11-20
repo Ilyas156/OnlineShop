@@ -4,8 +4,8 @@ namespace frontend\tests\unit\forms;
 
 use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
-use frontend\forms\SignupForm;
 use frontend\tests\UnitTester;
+use shop\forms\auth\SignupForm;
 
 class SignupFormTest extends Unit
 {

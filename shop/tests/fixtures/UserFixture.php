@@ -1,6 +1,6 @@
 <?php
 
-namespace common\fixtures;
+namespace shop\fixtures;
 
 use yii\test\ActiveFixture;
 
